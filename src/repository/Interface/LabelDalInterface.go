@@ -1,22 +1,24 @@
 package dal
 
-import labelReq "backend/src/dto/request"
-
+import (
+	"backend/src/domain"
+	"backend/src/dto"
+)
 // dal -> data access layer - camada de acesso a dados
 type LabelDataAccessLayerInterface interface {
 
 	// CreateLabel cria uma nova tarefa a partir
 	// do parametro req, returna a tarefa criada
 	// e um erro.
-	CreateLabel(req labelReq.LabelRequestDto) (Label, error)
+	CreateLabel(req dto.LabelRequestDto) (domain.Label, error)
 
-	ReadLabel(labelId string) (Label, error)
+	ReadLabel(labelId string) (domain.Label, error)
 
-	UpdateLabel(labelID string, req UpdateLabelRequest) (Label, error)
+	UpdateLabel(labelID string, req dto.LabelRequestDto) (domain.Label, error)
 
 	DeleteLabel(labelID string) error
 
-	ListAllLabel(req ListLabelRequest) ([]Label, error)
+	// ListAllLabel(req ListLabelRequest) ([]domain.Label, error)
 
 	// AuthenticateUser retorna uma string contendo o id de uma sessao criada pelo usuario
 	// autenticado
