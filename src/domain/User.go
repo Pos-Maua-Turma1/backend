@@ -5,13 +5,14 @@ import (
 )
 
 type User struct {
-	gorm.Model
-	email 		*string `json:"email" db:"email"`
-	password 	*string `json:"password" db:"password"`
-	notes 		[]*Note `gorm:"foreignKey:userId"`
+	// gorm.Model
+	id       int    `json:"id"`
+	email    string `json:"email"`
+	password string `json:"password"`
+	// notes    []*Note `gorm:"foreignKey:userId"`
 }
 
 func MigrateUser(db *gorm.DB) error {
 	err := db.AutoMigrate(&User{})
-	return err 
+	return err
 }

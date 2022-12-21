@@ -2,15 +2,17 @@ package repository
 
 import (
 	"backend/src/domain"
+	"fmt"
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-func (r *Repository) CreateUser(c *fiber.Ctx) error{
+func (r *Repository) CreateUser(c *fiber.Ctx) error {
 	user := domain.User{}
 
 	err := c.BodyParser(&user)
+	fmt.Println(err)
 
 	if err != nil {
 		c.Status(http.StatusUnprocessableEntity).JSON(
@@ -31,11 +33,11 @@ func (r *Repository) CreateUser(c *fiber.Ctx) error{
 	return nil
 }
 
-func (r *Repository) DeleteUser(context *fiber.Ctx) error{
+func (r *Repository) DeleteUser(context *fiber.Ctx) error {
 	user := domain.User{}
 	id := context.Params("id")
 
-	if id == ""{
+	if id == "" {
 		context.Status(http.StatusInternalServerError).JSON(
 			&fiber.Map{"message": "Id cannot be empty"})
 		return nil
@@ -54,11 +56,11 @@ func (r *Repository) DeleteUser(context *fiber.Ctx) error{
 	return nil
 }
 
-func (r *Repository) GetUserById(context *fiber.Ctx) error{
+func (r *Repository) GetUserById(context *fiber.Ctx) error {
 	user := domain.User{}
 	id := context.Params("id")
 
-	if id == ""{
+	if id == "" {
 		context.Status(http.StatusInternalServerError).JSON(
 			&fiber.Map{"message": "Id cannot be empty"})
 		return nil
@@ -73,15 +75,15 @@ func (r *Repository) GetUserById(context *fiber.Ctx) error{
 
 	context.Status(http.StatusOK).JSON(
 		&fiber.Map{"message": "User Id fetched suceffuly",
-				"data": user,
-	})
-		
+			"data": user,
+		})
+
 	return nil
 }
 
 // func (r *Repository) UpdateUser(context *fiber.Ctx) {}
 
-func (r *Repository) GetUsers(context *fiber.Ctx) error{
+func (r *Repository) GetUsers(context *fiber.Ctx) error {
 	users := &[]domain.User{}
 
 	err := r.DB.Find(users).Error
@@ -93,13 +95,13 @@ func (r *Repository) GetUsers(context *fiber.Ctx) error{
 
 	context.Status(http.StatusOK).JSON(&fiber.Map{
 		"message": "User Fetched Successfully",
-		"data": users,
+		"data":    users,
 	})
 
 	return nil
 }
 
-func (r *Repository) SetupRoutes(app *fiber.App){
+func (r *Repository) SetupRoutes(app *fiber.App) {
 	api := app.Group("/api")
 	api.Post("/user", r.CreateUser)
 	api.Delete("/user/:id", r.DeleteUser)
