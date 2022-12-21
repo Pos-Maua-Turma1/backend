@@ -1,12 +1,17 @@
 package domain
 
-import "time"
+import (
+	"gorm.io/gorm"
+)
 
 type Note struct {
-	id          string `json:"id" db:"id"`
-	userId 		string `json:"user_id" db:"user_id"`
+	gorm.Model
+	userId 		string
 	noteBody 	string `json:"note_body" db:"note_body"`
-	labels 		[]Label
-	createdAt   time.Time `json:"created_at" db:"created_at"`
-	updatedAt   time.Time `json:"updated_at" db:"updated_at"`
+	labels 		[]*Label `gorm:"many2many:label_note"`
+}
+
+func MigrateNote(db *gorm.DB) error {
+	err := db.AutoMigrate(&Note{})
+	return err 
 }

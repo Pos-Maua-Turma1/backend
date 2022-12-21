@@ -1,12 +1,17 @@
 package domain
 
-import "time"
+import (
+	"gorm.io/gorm"
+)
 
 type User struct {
-	id          string `json:"id" db:"id"`
-	email 		string `json:"email" db:"user_id"`
-	password 	string `json:"password" db:"password"`
-	notes 		[]Note 
-	createdAt   time.Time `json:"created_at" db:"created_at"`
-	updatedAt   time.Time `json:"updated_at" db:"updated_at"`
+	gorm.Model
+	email 		*string `json:"email" db:"email"`
+	password 	*string `json:"password" db:"password"`
+	notes 		[]*Note `gorm:"foreignKey:userId"`
+}
+
+func MigrateUser(db *gorm.DB) error {
+	err := db.AutoMigrate(&User{})
+	return err 
 }
